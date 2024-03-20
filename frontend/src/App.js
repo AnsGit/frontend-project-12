@@ -8,7 +8,7 @@ const App = () => (
       <p>
         Edit
         {' '}
-        <code>src/App.jsasdasdasdasdas11111sss</code>
+        <code>src/App.js</code>
         {' '}
         and save to reload.
       </p>
