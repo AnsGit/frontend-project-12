@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MainPage, LoginPage, Page404 } from './components/pages';
-import './App.css';
+import './App.scss';
 
 const App = () => (
   <div className="App">
