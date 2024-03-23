@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 
-const Page404 = () => {
+const ChatPage = () => {
   const { t } = useTranslation();
 
   return (
-    <h2>{t('404.title')}</h2>
+    <h2>{t('chat.title')}</h2>
   );
 };
 
-export default Page404;
+export default ChatPage;

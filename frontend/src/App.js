@@ -1,5 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { MainPage, LoginPage, Page404 } from './components/pages';
+import {
+  MainPage,
+  LoginPage,
+  ChatPage,
+  Page404,
+} from './components/pages';
 import './App.scss';
 
 const App = () => (
@@ -7,7 +12,7 @@ const App = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />}>
-          <Route index element={<h2>Home page</h2>} />
+          <Route index element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Page404 />} />
         </Route>

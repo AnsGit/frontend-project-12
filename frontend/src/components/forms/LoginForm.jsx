@@ -1,67 +1,72 @@
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { FormFeedback, FormField } from './components';
 
 const validationSchema = Yup.object({
   username: Yup.string()
-    .max(15, 'Must be 15 characters or less')
-    .min(5, 'Must be at least 5 characters')
-    .required('Required'),
+    .max(15, 'username-long')
+    .min(5, 'username-short')
+    .required('field-required'),
   password: Yup.string()
-    .max(15, 'Must be 15 characters or less')
-    .min(5, 'Must be at least 5 characters')
-    .required('Required'),
+    .max(15, 'password-long')
+    .min(5, 'password-short')
+    .required('field-required'),
 });
 
-const LoginForm = () => (
-  <Formik
-    initialValues={{ username: '', password: '' }}
-    validationSchema={validationSchema}
-    validateOnBlur={false}
-    validateOnChange={false}
-    onSubmit={async (values, { setStatus }) => {
-      try {
-        const response = await axios.post('/api/v1/login', values);
-        const { data } = response;
-        setStatus({ type: 'success', code: 'Success' });
-        console.log(data);
-      } catch (e) {
-        setStatus({ type: 'error', code: 'login' });
-      }
-    }}
-  >
-    {({ values, errors, status }) => {
-      const isEmpty = Object.values(values).some((v) => v === '');
+const LoginForm = () => {
+  const { t } = useTranslation();
 
-      return (
-        <Form className="m-auto w-25">
-          {status && <FormFeedback type={status.type} code={status.code} />}
+  return (
+    <Formik
+      initialValues={{ username: '', password: '' }}
+      validationSchema={validationSchema}
+      validateOnBlur={false}
+      validateOnChange={false}
+      onSubmit={async (values, { setStatus }) => {
+        try {
+          const response = await axios.post('/api/v1/login', values);
+          const { data } = response;
+          setStatus({ type: 'success', code: 'login' });
+          console.log(data);
+        } catch (e) {
+          setStatus({ type: 'error', code: 'login' });
+        }
+      }}
+    >
+      {({ values, errors, status }) => {
+        const isEmpty = Object.values(values).some((v) => v === '');
 
-          <FormField
-            name="username"
-            label="Username"
-            type="text"
-            errors={errors}
-          />
+        return (
+          <Form className="m-auto w-25">
+            {status && <FormFeedback type={status.type} code={status.code} />}
 
-          <FormField
-            name="password"
-            label="Password"
-            type="password"
-            errors={errors}
-          />
+            <FormField
+              name="username"
+              label={t('username')}
+              type="text"
+              errors={errors}
+            />
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-1"
-            disabled={isEmpty}
-          >
-            Submit
-          </button>
-        </Form>
-      );
-    }}
-  </Formik>
-);
+            <FormField
+              name="password"
+              label={t('password')}
+              type="password"
+              errors={errors}
+            />
+
+            <button
+              type="submit"
+              className="btn btn-primary mt-1"
+              disabled={isEmpty}
+            >
+              {t('submit')}
+            </button>
+          </Form>
+        );
+      }}
+    </Formik>
+  );
+};
 export default LoginForm;
