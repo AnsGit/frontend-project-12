@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as Yup from 'yup';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
+import { FormFeedback, FormField } from './components';
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -12,27 +13,6 @@ const validationSchema = Yup.object({
     .min(5, 'Must be at least 5 characters')
     .required('Required'),
 });
-
-const renderFeedback = ({ type, code }) => {
-  const feedbackType = type === 'error' ? 'invalid' : 'valid';
-
-  return (
-    <div className={`d-block text-start ${feedbackType}-feedback`}>{code}</div>
-  );
-};
-
-const renderField = (name, label, type, errors) => (
-  <div className="form-group m-auto mb-2">
-    <Field
-      type={type}
-      name={name}
-      className="form-control mt-1"
-      placeholder={label}
-      label={label}
-    />
-    { errors[name] ? renderFeedback({ type: 'error', code: errors[name] }) : null }
-  </div>
-);
 
 const LoginForm = () => (
   <Formik
@@ -56,10 +36,21 @@ const LoginForm = () => (
 
       return (
         <Form className="m-auto w-25">
-          {status && renderFeedback(status)}
+          {status && <FormFeedback type={status.type} code={status.code} />}
 
-          {renderField('username', 'Username', 'text', errors)}
-          {renderField('password', 'Password', 'password', errors)}
+          <FormField
+            name="username"
+            label="Username"
+            type="text"
+            errors={errors}
+          />
+
+          <FormField
+            name="password"
+            label="Password"
+            type="password"
+            errors={errors}
+          />
 
           <button
             type="submit"
