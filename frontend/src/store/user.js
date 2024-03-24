@@ -35,7 +35,8 @@ const userSlice = createSlice({
     ...getUserStateFromLocalstorage(),
   },
   reducers: {},
-  extraReducers: (builder) => { /* eslint-disable no-param-reassign */
+  extraReducers: (builder) => {
+    /* eslint-disable no-param-reassign */
     builder
       .addCase(login.pending, (state) => {
         state.login.status = 'pending';
@@ -51,6 +52,7 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state) => {
         state.login.status = 'error';
       });
+    /* eslint-enable no-param-reassign */
   },
 });
 
