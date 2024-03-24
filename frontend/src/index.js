@@ -1,11 +1,13 @@
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import React from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 import resources from './locales/index.js';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import store from './store';
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -21,7 +23,9 @@ const init = async () => {
 
   root.render(
     <I18nextProvider i18n={i18n}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </I18nextProvider>,
   );
 

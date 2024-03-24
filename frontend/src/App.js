@@ -1,10 +1,16 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
+
 import {
   MainPage,
   LoginPage,
   ChatPage,
   Page404,
 } from './components/pages';
+
 import './App.scss';
 
 const App = () => (
