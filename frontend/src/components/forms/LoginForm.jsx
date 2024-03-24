@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = (props) => {
-  const { onSubmit = () => {}, user } = props;
+  const { onSubmit = () => {}, status } = props;
 
   const { t } = useTranslation();
 
@@ -30,8 +30,8 @@ const LoginForm = (props) => {
       {({ values, errors }) => {
         const isEmpty = Object.values(values).some((v) => v === '');
 
-        const toShowFeedback = user.login.status !== 'pending';
-        const feedbackType = user.login.status === 'success' ? 'success' : 'error';
+        const toShowFeedback = status !== 'pending';
+        const feedbackType = status === 'success' ? 'success' : 'error';
 
         return (
           <Form className="m-auto w-25">
