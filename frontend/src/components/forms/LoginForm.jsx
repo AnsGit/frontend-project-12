@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +15,7 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = (props) => {
-  const { onLogin = () => {} } = props;
+  const { onSubmit = () => {}, user } = props;
 
   const { t } = useTranslation();
 
@@ -26,23 +25,17 @@ const LoginForm = (props) => {
       validationSchema={validationSchema}
       validateOnBlur={false}
       validateOnChange={false}
-      onSubmit={async (values, { setStatus }) => {
-        try {
-          const response = await axios.post('/api/v1/login', values);
-
-          setStatus({ type: 'success', code: 'login' });
-          onLogin(response.data);
-        } catch (e) {
-          setStatus({ type: 'error', code: 'login' });
-        }
-      }}
+      onSubmit={onSubmit}
     >
-      {({ values, errors, status }) => {
+      {({ values, errors }) => {
         const isEmpty = Object.values(values).some((v) => v === '');
+
+        const toShowFeedback = user.login.status !== 'pending';
+        const feedbackType = user.login.status === 'success' ? 'success' : 'error';
 
         return (
           <Form className="m-auto w-25">
-            {status && <FormFeedback type={status.type} code={status.code} />}
+            {toShowFeedback && <FormFeedback type={feedbackType} code="login" />}
 
             <FormField
               name="username"

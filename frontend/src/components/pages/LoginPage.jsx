@@ -24,7 +24,7 @@ const LoginPage = () => {
   return (
     <>
       <h2>{t('login.title')}</h2>
-      <LoginForm onLogin={onLogin} />
+      <LoginForm user={user} onSubmit={onLogin} />
     </>
   );
 };
