@@ -2,10 +2,7 @@ import axios from 'axios';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { FormFeedback, FormField } from './components';
-import * as actions from '../../store/user';
 
 const validationSchema = Yup.object({
   username: Yup.string()
@@ -18,11 +15,10 @@ const validationSchema = Yup.object({
     .required('field-required'),
 });
 
-const LoginForm = () => {
-  const { t } = useTranslation();
+const LoginForm = (props) => {
+  const { onLogin = () => {} } = props;
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   return (
     <Formik
@@ -33,11 +29,9 @@ const LoginForm = () => {
       onSubmit={async (values, { setStatus }) => {
         try {
           const response = await axios.post('/api/v1/login', values);
-          const { data } = response;
-          setStatus({ type: 'success', code: 'login' });
 
-          dispatch(actions.login(data));
-          navigate('/');
+          setStatus({ type: 'success', code: 'login' });
+          onLogin(response.data);
         } catch (e) {
           setStatus({ type: 'error', code: 'login' });
         }

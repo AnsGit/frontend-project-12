@@ -26,11 +26,13 @@ const userSlice = createSlice({
     ...getUserStateFromLocalstorage(),
   },
   reducers: {
-    login: (state, action) => {
+    login: (state, { payload }) => {
       // eslint-disable-next-line
-      state = {...state, ...action.payload};
+      state.username = payload.username;
+      // eslint-disable-next-line
+      state.token = payload.token;
 
-      saveUserStateToLocalstorage(action.payload);
+      saveUserStateToLocalstorage(payload);
     },
   },
 });
