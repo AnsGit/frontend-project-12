@@ -21,6 +21,8 @@ const LoginPage = () => {
   // eslint-disable-next-line
   }, [user]);
 
+  if (user.token) return null;
+
   return (
     <>
       <h2>{t('login.title')}</h2>
