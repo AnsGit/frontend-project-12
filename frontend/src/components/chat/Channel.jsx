@@ -18,10 +18,10 @@ const Channel = () => {
           key={id}
           className="row mb-3"
         >
-          <span className="fw-bold text-end">
+          <span className="fw-bold text-start">
             {username}
           </span>
-          <span className="text-end">
+          <span className="text-start">
             {name}
           </span>
         </div>
