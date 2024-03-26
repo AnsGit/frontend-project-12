@@ -1,11 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Chat from '../chat';
 
 const ChatPage = () => {
-  const { t } = useTranslation();
-
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -13,11 +11,15 @@ const ChatPage = () => {
     if (user.token) return;
 
     navigate('/login');
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [user]);
 
+  if (!user.token) return null;
+
   return (
-    <h2>{t('chat.title')}</h2>
+    <div className="w-75 m-auto">
+      <Chat />
+    </div>
   );
 };
 
