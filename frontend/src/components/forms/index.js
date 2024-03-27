@@ -1,4 +1,4 @@
 import LoginForm from './LoginForm';
-import CommentForm from './CommentForm';
+import MessageForm from './MessageForm';
 
-export { LoginForm, CommentForm };
+export { LoginForm, MessageForm };

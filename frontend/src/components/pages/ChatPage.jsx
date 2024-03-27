@@ -17,7 +17,7 @@ const ChatPage = () => {
   if (!user.token) return null;
 
   return (
-    <div className="w-75 m-auto">
+    <div className="w-auto text-center">
       <Chat />
     </div>
   );

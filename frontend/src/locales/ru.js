@@ -24,5 +24,7 @@ export default {
     username: 'Имя',
     password: 'Пароль',
     submit: 'Подтвердить',
+    message: 'Сообщение',
+    send: 'Отправить',
   },
 };

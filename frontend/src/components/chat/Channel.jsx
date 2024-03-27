@@ -1,10 +1,35 @@
 import { useSelector } from 'react-redux';
-import { useGetMessagesQuery } from '../../services/api/messages';
+import { useEffect } from 'react';
+import {
+  useGetMessagesQuery,
+  useAddMessageMutation,
+} from '../../services/api/messages';
+import MessageForm from '../forms/MessageForm.jsx';
 
 const Channel = () => {
-  const { data: messages, isLoading } = useGetMessagesQuery();
+  const { data: messages, isLoading, refetch } = useGetMessagesQuery();
+
+  const [
+    addMessage,
+    addMessageResponse,
+  ] = useAddMessageMutation();
 
   const curChannelID = useSelector((state) => state.channel.data.id);
+  const user = useSelector((state) => state.user);
+
+  const onAddMessage = (data, { resetForm }) => {
+    addMessage({
+      ...data,
+      channelId: curChannelID,
+      username: user.username,
+    });
+
+    resetForm();
+  };
+
+  useEffect(() => {
+    if (addMessageResponse.isSuccess) refetch();
+  }, [addMessageResponse, refetch]);
 
   if (isLoading) return null;
   if (curChannelID === null) return null;
@@ -12,20 +37,27 @@ const Channel = () => {
   const channelMessages = messages.filter(({ channelId }) => channelId === curChannelID);
 
   return (
-    <div className="list-group">
-      {channelMessages.map(({ id, name, username }) => (
-        <div
-          key={id}
-          className="row mb-3"
-        >
-          <span className="fw-bold text-start">
-            {username}
-          </span>
-          <span className="text-start">
-            {name}
-          </span>
+    <div className="col position-relative h-100">
+      <div className="row overflow-auto h-75 w-100 m-0">
+        <div className="list-group p-4">
+          {channelMessages.map(({ id, body, username }) => (
+            <div
+              key={id}
+              className="row mb-3"
+            >
+              <span className="fw-bold text-start">
+                {username}
+              </span>
+              <span className="text-start">
+                {body}
+              </span>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+      <div className="row w-100 h-25 bg-secondary-subtle m-0 align-items-center">
+        <MessageForm onSubmit={(onAddMessage)} />
+      </div>
     </div>
   );
 };
