@@ -10,10 +10,7 @@ const Chat = (props = {}) => {
   } = props;
 
   return (
-    <div
-      className="row bg-body-tertiary border d-inline-flex"
-      style={style}
-    >
+    <div className="row bg-body-tertiary border d-inline-flex" style={style}>
       <div className="col-3 bg-body-secondary p-4">
         <Channels />
       </div>

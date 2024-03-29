@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import {
   useGetMessagesQuery,
   useAddMessageMutation,
 } from '../../services/api/messages';
 import MessageForm from '../forms/MessageForm.jsx';
+import SocketContext from '../../services/socket';
 
 const Channel = () => {
   const { data: messages, isLoading, refetch } = useGetMessagesQuery();
@@ -16,6 +17,8 @@ const Channel = () => {
 
   const curChannelID = useSelector((state) => state.channel.data.id);
   const user = useSelector((state) => state.user);
+
+  const socket = useContext(SocketContext);
 
   const onAddMessage = (data, { resetForm }) => {
     addMessage({
@@ -30,6 +33,12 @@ const Channel = () => {
   useEffect(() => {
     if (addMessageResponse.isSuccess) refetch();
   }, [addMessageResponse, refetch]);
+
+  useEffect(() => {
+    // subscribe new message
+    socket.on('newMessage', () => refetch());
+    // eslint-disable-next-line
+  }, []);
 
   if (isLoading) return null;
   if (curChannelID === null) return null;
