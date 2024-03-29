@@ -35,9 +35,12 @@ const Channel = () => {
   }, [addMessageResponse, refetch]);
 
   useEffect(() => {
-    // subscribe new message
-    socket.on('newMessage', () => refetch());
-    // eslint-disable-next-line
+    socket.on('connect', () => {
+      console.log('CONNECTED!!!');
+      // subscribe new message
+      socket.on('newMessage', () => refetch());
+      // eslint-disable-next-line
+    });
   }, []);
 
   if (isLoading) return null;

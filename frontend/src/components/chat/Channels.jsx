@@ -21,12 +21,14 @@ const Channels = () => {
   }, [isLoading]);
 
   useEffect(() => {
-    // subscribe new channel
-    socket.on('newChannel', () => refetch());
-    // subscribe remove channel
-    socket.on('removeChannel', () => refetch());
-    // subscribe rename channel
-    socket.on('renameChannel', () => refetch());
+    socket.on('connect', () => {
+      // subscribe new channel
+      socket.on('newChannel', () => refetch());
+      // subscribe remove channel
+      socket.on('removeChannel', () => refetch());
+      // subscribe rename channel
+      socket.on('renameChannel', () => refetch());
+    });
     // eslint-disable-next-line
   }, []);
 
