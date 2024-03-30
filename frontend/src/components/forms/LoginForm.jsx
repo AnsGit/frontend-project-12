@@ -1,21 +1,28 @@
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
+import Button from 'react-bootstrap/Button';
 import { FormFeedback, FormField } from './components';
 
 const validationSchema = Yup.object({
   username: Yup.string()
-    .max(15, 'username-long')
-    .min(5, 'username-short')
+    .max(15, 'login-username-long')
+    .min(5, 'login-username-short')
     .required('field-required'),
   password: Yup.string()
-    .max(15, 'password-long')
-    .min(5, 'password-short')
+    .max(15, 'login-password-long')
+    .min(5, 'login-password-short')
     .required('field-required'),
 });
 
 const LoginForm = (props) => {
-  const { onSubmit = () => {}, status } = props;
+  const { onSubmit = () => {}, status = 'pending' } = props;
+
+  const statuses = ['pending', 'sending', 'error', 'success'];
+
+  if (!statuses.includes(status)) {
+    throw new Error(`status must have one of the values: ${JSON.stringify(statuses)}`);
+  }
 
   const { t } = useTranslation();
 
@@ -29,6 +36,7 @@ const LoginForm = (props) => {
     >
       {({ values, errors }) => {
         const isEmpty = Object.values(values).some((v) => v === '');
+        const isDisabled = status === 'sending' || isEmpty;
 
         const toShowFeedback = status !== 'pending';
         const feedbackType = status === 'success' ? 'success' : 'error';
@@ -51,13 +59,13 @@ const LoginForm = (props) => {
               errors={errors}
             />
 
-            <button
+            <Button
               type="submit"
               className="btn btn-primary mt-1"
-              disabled={isEmpty}
+              disabled={isDisabled}
             >
               {t('submit')}
-            </button>
+            </Button>
           </Form>
         );
       }}

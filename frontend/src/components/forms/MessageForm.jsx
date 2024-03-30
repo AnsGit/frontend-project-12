@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
+import Button from 'react-bootstrap/Button';
 import { FormField } from './components';
 
 const validationSchema = Yup.object({
@@ -9,7 +10,13 @@ const validationSchema = Yup.object({
 });
 
 const MessageForm = (props) => {
-  const { onSubmit = () => {} } = props;
+  const { onSubmit = () => {}, status = 'pending' } = props;
+
+  const statuses = ['pending', 'sending', 'error', 'success'];
+
+  if (!statuses.includes(status)) {
+    throw new Error(`status must have one of the values: ${JSON.stringify(statuses)}`);
+  }
 
   const { t } = useTranslation();
 
@@ -23,6 +30,7 @@ const MessageForm = (props) => {
     >
       {({ values, errors }) => {
         const isEmpty = Object.values(values).some((v) => v === '');
+        const isDisabled = status === 'sending' || isEmpty;
 
         return (
           <Form className="w-100">
@@ -37,13 +45,13 @@ const MessageForm = (props) => {
                 />
               </div>
               <div className="col col-1 w-25 col p-3">
-                <button
+                <Button
                   type="submit"
                   className="btn btn-primary"
-                  disabled={isEmpty}
+                  disabled={isDisabled}
                 >
                   {t('send')}
-                </button>
+                </Button>
               </div>
             </div>
 
