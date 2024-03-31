@@ -32,6 +32,8 @@ export default {
     message: 'Сообщение',
     send: 'Отправить',
     cancel: 'Отменить',
+    delete: 'Удалить',
+    rename: 'Переименовать',
     channels: 'Каналы',
     'channel-name': 'Имя',
     'add-channel': 'Добавить канал',

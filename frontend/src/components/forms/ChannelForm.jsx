@@ -10,6 +10,7 @@ const ChannelForm = (props) => {
   const {
     onSubmit = () => {},
     onCancel = () => {},
+    name = '',
     isShown = false,
     type = 'add',
     status = 'pending',
@@ -38,7 +39,7 @@ const ChannelForm = (props) => {
       .test(
         'check-channel-existing',
         'channel-exists',
-        (name) => channels.every((channel) => channel.name !== name),
+        (value) => channels.every((channel) => channel.name !== value),
       )
       .required('field-required'),
   });
@@ -47,14 +48,18 @@ const ChannelForm = (props) => {
 
   return (
     <Formik
-      initialValues={{ name: '' }}
+      enableReinitialize
+      initialValues={{ name }}
       validationSchema={validationSchema}
       validateOnBlur={false}
       validateOnChange={false}
       onSubmit={onSubmit}
     >
-      {({ values, errors }) => {
-        const isEmpty = Object.values(values).some((v) => v === '');
+      {({ values, errors, initialValues }) => {
+        const isEmpty = Object.entries(values).some(
+          ([key, value]) => value === initialValues[key],
+        );
+
         const isDisabled = status === 'sending' || isEmpty;
 
         const toShowFeedback = !['sending', 'pending'].includes(status);

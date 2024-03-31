@@ -2,10 +2,12 @@ import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useRef, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
 import SocketContext from '../../services/socket';
 import ChannelsMenu from './ChannelsMenu';
+import ChannelMenu from './ChannelMenu';
 
 // const scrollToChannel = (ref, channelID) => {
 //   if (!ref.current) return;
@@ -78,26 +80,42 @@ const Channels = () => {
         </div>
         <ChannelsMenu />
       </div>
-      <div ref={channelsRef} className="row overflow-auto position-relative">
+      <div ref={channelsRef} className="row overflow-auto position-relative h-100">
         <div className="list-group p-0 text-start">
           {channels.map((channel) => {
-            const { id, name } = channel;
+            const { id, name, removable } = channel;
+            const isActive = id === curChannelID;
 
             const className = cn(
+              'rounded-3',
+              'd-flex',
+              'p-0',
+              'mb-1',
+            );
+
+            const btnClassName = cn(
               'list-group-item',
-              'list-group-item-action',
-              { active: id === curChannelID },
+              'btn-primary',
+              'w-100',
+              'text-start',
+              { active: isActive, 'rounded-end-0': removable },
             );
 
             return (
-              <a
+              <div
                 key={id}
-                href={`#${id}`}
                 className={className}
-                onClick={() => dispatch(chooseChannel(channel))}
               >
-                {`# ${name}`}
-              </a>
+                <Button
+                  className={btnClassName}
+                  onClick={() => dispatch(chooseChannel(channel))}
+                >
+                  {name}
+                </Button>
+
+                {removable && <ChannelMenu id={id} name={name} />}
+              </div>
+
             );
           })}
         </div>
