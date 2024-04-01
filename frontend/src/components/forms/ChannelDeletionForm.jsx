@@ -28,6 +28,8 @@ const ChannelDeletionForm = (props) => {
       onSubmit={onSubmit}
     >
       {() => {
+        const isDisabled = status === 'sending';
+
         const toShowFeedback = !['sending', 'pending'].includes(status);
         const feedbackType = status === 'success' ? 'success' : 'error';
 
@@ -46,7 +48,7 @@ const ChannelDeletionForm = (props) => {
                   {t('cancel')}
                 </Button>
 
-                <Button variant="danger" type="submit">
+                <Button variant="danger" type="submit" disabled={isDisabled}>
                   {t('submit')}
                 </Button>
               </Modal.Footer>
