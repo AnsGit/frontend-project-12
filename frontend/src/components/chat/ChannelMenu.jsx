@@ -2,40 +2,64 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ChannelForm from '../forms/ChannelForm.jsx';
+import ChannelEditionForm from '../forms/ChannelEditionForm.jsx';
+import ChannelDeletionForm from '../forms/ChannelDeletionForm.jsx';
 import {
   useUpdateChannelMutation,
-  // useDeleteChannelMutation,
+  useDeleteChannelMutation,
 } from '../../services/api/channels.js';
+
+import {
+  useGetMessagesQuery,
+  useDeleteMessageMutation,
+} from '../../services/api/messages.js';
 
 const ChannelMenu = (props = {}) => {
   const { id, name } = props;
 
   const { t } = useTranslation();
 
+  const {
+    data: messages,
+    isSuccess: isMessagesDataLoaded,
+    // refetch: refetchMessages,
+    // status: messagesLoadingStatus,
+  } = useGetMessagesQuery();
+
+  const [
+    deleteMessage,
+    // {
+    //   isError: isMessageDeletionError,
+    //   isSuccess: isMessageDeleted,
+    //   isUninitialized: isMessageDeletionUninitialized,
+    //   data: deletedMessageData,
+    // },
+  ] = useDeleteMessageMutation();
+
   const [
     updateChannel,
     {
-      isError: isChannelUpdatingError,
+      isError: isChannelUpdateError,
       isSuccess: isChannelUpdated,
-      isUninitialized: isChannelUpdatingUninitialized,
+      isUninitialized: isChannelUpdateUninitialized,
       // data: updatedChannelData,
     },
   ] = useUpdateChannelMutation();
 
-  // const [
-  //   deleteChannel,
-  //   {
-  //     isError: isChannelDeletingError,
-  //     isSuccess: isChannelDeleted,
-  //     isUninitialized: isChannelDeletingUninitialized,
-  //     data: deletedChannelData,
-  //   },
-  // ] = useDeleteChannelMutation();
+  const [
+    deleteChannel,
+    {
+      isError: isChannelDeletionError,
+      isSuccess: isChannelDeleted,
+      isUninitialized: isChannelDeletionUninitialized,
+      // data: deletedChannelData,
+    },
+  ] = useDeleteChannelMutation();
 
   const [action, setAction] = useState(null);
   const [isShown, setShown] = useState(false);
   const [status, setStatus] = useState('pending');
+  const [deletedChannelID, setDeletedChannelID] = useState(-1);
 
   const hide = () => setShown(false);
   const show = () => setShown(true);
@@ -51,16 +75,17 @@ const ChannelMenu = (props = {}) => {
     updateChannel({ ...data, id });
   };
 
-  // const onDelete = (data, { resetForm }) => {
-  //   setStatus('sending');
+  const onDelete = (data, { resetForm }) => {
+    setStatus('sending');
+    setDeletedChannelID(id);
 
-  //   deleteChannel(id).then(resetForm);
-  // };
+    deleteChannel(id).then(resetForm);
+  };
 
   useEffect(() => {
-    if (isChannelUpdatingUninitialized) return;
+    if (isChannelUpdateUninitialized) return;
 
-    if (isChannelUpdatingError) {
+    if (isChannelUpdateError) {
       setStatus('error'); return;
     }
 
@@ -70,28 +95,39 @@ const ChannelMenu = (props = {}) => {
     }
     // eslint-disable-next-line
   }, [
-    isChannelUpdatingUninitialized,
-    isChannelUpdatingError,
+    isChannelUpdateUninitialized,
+    isChannelUpdateError,
     isChannelUpdated,
   ]);
 
-  // useEffect(() => {
-  //   if (isChannelDeletingUninitialized) return;
+  useEffect(() => {
+    if (isChannelDeletionUninitialized) return;
 
-  //   if (isChannelDeletingError) {
-  //     setStatus('error'); return;
-  //   }
+    if (isChannelDeletionError) {
+      setStatus('error'); return;
+    }
 
-  //   if (isChannelDeleted) {
-  //     setStatus('pending');
-  //     setShown(false);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [
-  //   isChannelDeletingUninitialized,
-  //   isChannelDeletingError,
-  //   isChannelDeleted,
-  // ]);
+    if (isChannelDeleted) {
+      setStatus('pending');
+      setShown(false);
+    }
+    // eslint-disable-next-line
+  }, [
+    isChannelDeletionUninitialized,
+    isChannelDeletionError,
+    isChannelDeleted,
+  ]);
+
+  useEffect(() => {
+    if (!isMessagesDataLoaded) return;
+    if (deletedChannelID === -1) return;
+
+    messages.forEach((message) => {
+      if (message.channelId !== deletedChannelID) return;
+      deleteMessage(message.id);
+    });
+    // eslint-disable-next-line
+  }, [deletedChannelID, messages]);
 
   return (
     <>
@@ -119,13 +155,21 @@ const ChannelMenu = (props = {}) => {
         </Dropdown.Menu>
       </Dropdown>
 
-      <ChannelForm
+      <ChannelEditionForm
         onSubmit={onUpdate}
         onCancel={hide}
         isShown={isShown && action === 'rename'}
         status={status}
         type="update"
         name={name}
+      />
+
+      <ChannelDeletionForm
+        onSubmit={onDelete}
+        onCancel={hide}
+        isShown={isShown && action === 'delete'}
+        status={status}
+        type="delete"
       />
     </>
 

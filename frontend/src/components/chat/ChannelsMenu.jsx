@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import ChannelForm from '../forms/ChannelForm';
+import ChannelEditionForm from '../forms/ChannelEditionForm.jsx';
 import {
   useAddChannelMutation,
 } from '../../services/api/channels.js';
@@ -11,9 +11,9 @@ const ChannelsMenu = () => {
   const [
     addChannel,
     {
-      isError: isChannelAddingError,
+      isError: isChannelAdditionError,
       isSuccess: isChannelAdded,
-      isUninitialized: isChannelAddingUninitialized,
+      isUninitialized: isChannelAdditionUninitialized,
       data: addedChannelData,
     },
   ] = useAddChannelMutation();
@@ -33,9 +33,9 @@ const ChannelsMenu = () => {
   };
 
   useEffect(() => {
-    if (isChannelAddingUninitialized) return;
+    if (isChannelAdditionUninitialized) return;
 
-    if (isChannelAddingError) {
+    if (isChannelAdditionError) {
       setStatus('error'); return;
     }
 
@@ -46,8 +46,8 @@ const ChannelsMenu = () => {
     }
     // eslint-disable-next-line
   }, [
-    isChannelAddingUninitialized,
-    isChannelAddingError,
+    isChannelAdditionUninitialized,
+    isChannelAdditionError,
     isChannelAdded,
   ]);
 
@@ -61,7 +61,7 @@ const ChannelsMenu = () => {
         +
       </Button>
 
-      <ChannelForm
+      <ChannelEditionForm
         onSubmit={onSubmit}
         onCancel={hide}
         isShown={isShown}

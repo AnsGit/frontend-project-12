@@ -24,11 +24,12 @@ const Channels = () => {
   const {
     data: channels,
     isSuccess: isChannelsDataLoaded,
-    refetch,
+    refetch: refetchChannels,
     // status: channelsLoadingStatus,
   } = useGetChannelsQuery();
 
   const curChannelID = useSelector((state) => state.channel.data.id);
+
   const dispatch = useDispatch();
 
   const channelsRef = useRef();
@@ -55,17 +56,22 @@ const Channels = () => {
   // ]);
 
   useEffect(() => {
+    if (!channels) return;
+
+    const isCurrentChannelDeleted = channels.every(({ id }) => id !== curChannelID);
+
+    if (isCurrentChannelDeleted) chooseDefaultChannel();
+    // eslint-disable-next-line
+  }, [channels]);
+
+  useEffect(() => {
     socket.on('connect', () => {
       // subscribe new channel
-      socket.on('newChannel', () => refetch());
+      socket.on('newChannel', () => refetchChannels());
       // subscribe remove channel
-      socket.on('removeChannel', ({ id }) => {
-        if (id === curChannelID) chooseDefaultChannel();
-
-        refetch();
-      });
+      socket.on('removeChannel', () => refetchChannels());
       // subscribe rename channel
-      socket.on('renameChannel', () => refetch());
+      socket.on('renameChannel', () => refetchChannels());
     });
     // eslint-disable-next-line
   }, []);

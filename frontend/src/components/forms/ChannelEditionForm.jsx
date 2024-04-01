@@ -3,10 +3,10 @@ import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { FormFeedback, FormField } from './components';
+import { FormFeedback, FormField } from './components/index.js';
 import { useGetChannelsQuery } from '../../services/api/channels.js';
 
-const ChannelForm = (props) => {
+const ChannelEditionForm = (props) => {
   const {
     onSubmit = () => {},
     onCancel = () => {},
@@ -97,4 +97,4 @@ const ChannelForm = (props) => {
     </Formik>
   );
 };
-export default ChannelForm;
+export default ChannelEditionForm;
