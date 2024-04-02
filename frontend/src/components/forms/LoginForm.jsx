@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 import { FormFeedback, FormField } from './components';
 
 const validationSchema = Yup.object({
@@ -16,6 +17,8 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = (props) => {
+  const navigate = useNavigate();
+
   const { onSubmit = () => {}, status = 'pending' } = props;
 
   const statuses = ['pending', 'sending', 'error', 'success'];
@@ -66,6 +69,20 @@ const LoginForm = (props) => {
             >
               {t('submit')}
             </Button>
+
+            <span className="d-flex justify-content-center mt-4 w-100">
+              {t('login.no-account?')}
+              <a
+                href="/signup"
+                className="ms-lg-1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(e.target.pathname);
+                }}
+              >
+                {t('signup.title')}
+              </a>
+            </span>
           </Form>
         );
       }}

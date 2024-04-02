@@ -8,6 +8,7 @@ export default {
     },
     login: {
       title: 'Авторизация',
+      'no-account?': 'Нет аккаунта?',
     },
     signup: {
       title: 'Регистрация',
