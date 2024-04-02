@@ -57,5 +57,6 @@ export default {
     'update-channel': 'Переименовать канал',
     'delete-channel': 'Удалить канал',
     'are-you-sure?': 'Вы уверены?',
+    exit: 'Выйти',
   },
 };
