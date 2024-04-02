@@ -26,12 +26,21 @@ const login = createAsyncThunk(
   },
 );
 
+const signup = createAsyncThunk(
+  'user/signup',
+  async ({ username, password }) => {
+    const response = await axios.post('/api/v1/signup', { username, password });
+    return response.data;
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     token: null,
     username: null,
     login: { status: 'pending' },
+    signup: { status: 'pending' },
     ...getUserStateFromLocalstorage(),
   },
   reducers: {},
@@ -52,10 +61,26 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state) => {
         state.login.status = 'error';
       });
+
+    builder
+      .addCase(signup.pending, (state) => {
+        state.signup.status = 'pending';
+      })
+      .addCase(signup.fulfilled, (state, { payload }) => {
+        state.signup.status = 'success';
+
+        state.username = payload.username;
+        state.token = payload.token;
+
+        saveUserStateToLocalstorage(payload);
+      })
+      .addCase(signup.rejected, (state) => {
+        state.signup.status = 'error';
+      });
     /* eslint-enable no-param-reassign */
   },
 });
 
-export { login };
+export { login, signup };
 
 export default userSlice.reducer;

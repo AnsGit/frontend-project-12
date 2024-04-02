@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import ChannelEditionForm from '../forms/ChannelEditionForm.jsx';
+import { ChannelEditionForm } from '../forms';
 import {
   useAddChannelMutation,
 } from '../../services/api/channels.js';

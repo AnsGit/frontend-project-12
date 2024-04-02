@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ChannelEditionForm from '../forms/ChannelEditionForm.jsx';
-import ChannelDeletionForm from '../forms/ChannelDeletionForm.jsx';
+import { ChannelEditionForm, ChannelDeletionForm } from '../forms';
 import {
   useUpdateChannelMutation,
   useDeleteChannelMutation,

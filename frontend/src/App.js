@@ -1,14 +1,7 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import {
-  MainPage,
-  LoginPage,
-  ChatPage,
-  Page404,
+  MainPage, LoginPage, SignUpPage, ChatPage, Page404,
 } from './components/pages';
 
 import './App.scss';
@@ -20,6 +13,7 @@ const App = () => (
         <Route path="/" element={<MainPage />}>
           <Route index element={<ChatPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="*" element={<Page404 />} />
         </Route>
       </Routes>

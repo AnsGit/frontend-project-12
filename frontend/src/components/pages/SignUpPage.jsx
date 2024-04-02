@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { LoginForm } from '../forms';
+import { SignUpForm } from '../forms';
 import * as actions from '../../store/user';
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const { t } = useTranslation();
 
   const [status, setStatus] = useState('pending');
@@ -13,10 +13,10 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const onLogin = (data, { resetForm }) => {
+  const onSignUp = (data, { resetForm }) => {
     setStatus('sending');
 
-    dispatch(actions.login(data)).then(({ error }) => {
+    dispatch(actions.signup(data)).then(({ error }) => {
       setStatus('pending');
 
       if (error) {
@@ -31,10 +31,10 @@ const LoginPage = () => {
 
   return (
     <>
-      <h2>{t('login.title')}</h2>
-      <LoginForm status={status} onSubmit={onLogin} />
+      <h2>{t('signup.title')}</h2>
+      <SignUpForm status={status} onSubmit={onSignUp} />
     </>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
