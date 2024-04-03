@@ -7,7 +7,7 @@ import {
   useAddMessageMutation,
 } from '../../services/api/messages';
 import MessageForm from '../forms/MessageForm.jsx';
-import SocketContext from '../../services/socket';
+import { SocketContext } from '../../services/socket';
 
 const Channel = () => {
   const {

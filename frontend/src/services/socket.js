@@ -1,5 +1,12 @@
 import { createContext } from 'react';
+import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
-export default SocketContext;
+const SocketProvider = (props = {}) => (
+  <SocketContext.Provider value={io()}>
+    {props.children}
+  </SocketContext.Provider>
+);
+
+export { SocketContext, SocketProvider };

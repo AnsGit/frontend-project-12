@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
-import SocketContext from '../../services/socket';
+import { SocketContext } from '../../services/socket';
 import ChannelsMenu from './ChannelsMenu';
 import ChannelMenu from './ChannelMenu';
 
