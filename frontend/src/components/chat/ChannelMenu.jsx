@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { ToastContext } from '../toastify.jsx';
 import { ChannelEditionForm, ChannelDeletionForm } from '../forms';
 import {
   useUpdateChannelMutation,
@@ -17,10 +18,12 @@ const ChannelMenu = (props = {}) => {
   const { id, name } = props;
 
   const { t } = useTranslation();
+  const { notify } = useContext(ToastContext);
 
   const {
     data: messages,
     isSuccess: isMessagesDataLoaded,
+    isError: isMessagesLoadingError,
     // refetch: refetchMessages,
     // status: messagesLoadingStatus,
   } = useGetMessagesQuery();
@@ -85,12 +88,15 @@ const ChannelMenu = (props = {}) => {
     if (isChannelUpdateUninitialized) return;
 
     if (isChannelUpdateError) {
-      setStatus('error'); return;
+      setStatus('error');
+      notify('error', t('toastify.error-channel-save'));
+      return;
     }
 
     if (isChannelUpdated) {
       setStatus('pending');
       setShown(false);
+      notify('success', t('toastify.success-channel-save'));
     }
     // eslint-disable-next-line
   }, [
@@ -103,12 +109,15 @@ const ChannelMenu = (props = {}) => {
     if (isChannelDeletionUninitialized) return;
 
     if (isChannelDeletionError) {
-      setStatus('error'); return;
+      setStatus('error');
+      notify('error', t('toastify.error-channel-deletion'));
+      return;
     }
 
     if (isChannelDeleted) {
       setStatus('pending');
       setShown(false);
+      notify('success', t('toastify.success-channel-deletion'));
     }
     // eslint-disable-next-line
   }, [
@@ -127,6 +136,12 @@ const ChannelMenu = (props = {}) => {
     });
     // eslint-disable-next-line
   }, [deletedChannelID, messages]);
+
+  useEffect(() => {
+    if (!isMessagesLoadingError) return;
+    notify('error', t('toastify.error-loading-messages'));
+    // eslint-disable-next-line
+  }, [isMessagesLoadingError]);
 
   return (
     <>

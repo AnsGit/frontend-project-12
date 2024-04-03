@@ -8,7 +8,7 @@ import { FormFeedback, FormField } from './components';
 const validationSchema = Yup.object({
   username: Yup.string()
     .max(15, 'login-username-long')
-    .min(5, 'login-username-short')
+    .min(3, 'login-username-short')
     .required('field-required'),
   password: Yup.string()
     .max(15, 'login-password-long')

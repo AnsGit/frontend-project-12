@@ -2,16 +2,22 @@ import { useSelector } from 'react-redux';
 import {
   useRef, useEffect, useContext, useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   useGetMessagesQuery,
   useAddMessageMutation,
 } from '../../services/api/messages';
 import MessageForm from '../forms/MessageForm.jsx';
 import { SocketContext } from '../../services/socket';
+import { ToastContext } from '../toastify.jsx';
 
 const Channel = () => {
+  const { t } = useTranslation();
+  const { notify } = useContext(ToastContext);
+
   const {
     data: messages,
+    isError: isMessagesLoadingError,
     isSuccess: isMessagesDataLoaded,
     refetch,
     status: messagesLoadingStatus,
@@ -21,6 +27,7 @@ const Channel = () => {
     addMessage,
     {
       isSuccess: isMessageAdded,
+      isError: isMessageAdditionError,
     },
   ] = useAddMessageMutation();
 
@@ -44,11 +51,17 @@ const Channel = () => {
   };
 
   useEffect(() => {
+    if (isMessageAdditionError) {
+      notify('error', t('toastify.error-message-save'));
+      return;
+    }
+
     if (isMessageAdded) {
       setStatus('pending');
       refetch();
     }
-  }, [isMessageAdded, refetch]);
+    // eslint-disable-next-line
+  }, [isMessageAdded, isMessageAdditionError, refetch]);
 
   useEffect(() => {
     if (messagesLoadingStatus !== 'fulfilled') return;
@@ -58,6 +71,12 @@ const Channel = () => {
     messagesLoadingStatus,
     curChannelID,
   ]);
+
+  useEffect(() => {
+    if (!isMessagesLoadingError) return;
+    notify('error', t('toastify.error-loading-messages'));
+    // eslint-disable-next-line
+  }, [isMessagesLoadingError]);
 
   useEffect(() => {
     socket.on('connect', () => {

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
 import { SocketContext } from '../../services/socket';
+import { ToastContext } from '../toastify.jsx';
 import ChannelsMenu from './ChannelsMenu';
 import ChannelMenu from './ChannelMenu';
 
@@ -20,10 +21,12 @@ import ChannelMenu from './ChannelMenu';
 
 const Channels = () => {
   const { t } = useTranslation();
+  const { notify } = useContext(ToastContext);
 
   const {
     data: channels,
     isSuccess: isChannelsDataLoaded,
+    isError: isChannelsLoadingError,
     refetch: refetchChannels,
     // status: channelsLoadingStatus,
   } = useGetChannelsQuery();
@@ -40,11 +43,16 @@ const Channels = () => {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
+    if (isChannelsLoadingError) {
+      notify('error', t('toastify.error-loading-channels'));
+      return;
+    }
+
     if (!isChannelsDataLoaded) return;
 
     chooseDefaultChannel();
     // eslint-disable-next-line
-  }, [isChannelsDataLoaded]);
+  }, [isChannelsDataLoaded, isChannelsLoadingError]);
 
   // useEffect(() => {
   //   if (channelsLoadingStatus !== 'fulfilled') return;

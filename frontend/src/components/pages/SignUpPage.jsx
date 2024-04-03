@@ -1,12 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { SignUpForm } from '../forms';
+import { ToastContext } from '../toastify.jsx';
 import * as actions from '../../store/user';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
+
+  const { notify } = useContext(ToastContext);
 
   const [status, setStatus] = useState('pending');
 
@@ -21,6 +24,7 @@ const SignUpPage = () => {
 
       if (error) {
         setStatus('error');
+        notify('error', t('toastify.error-sign-up'));
         return;
       }
 

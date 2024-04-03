@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
+import { useTranslation } from 'react-i18next';
 import { ChannelEditionForm } from '../forms';
 import {
   useAddChannelMutation,
 } from '../../services/api/channels.js';
 import { chooseChannel } from '../../store/channel';
+import { ToastContext } from '../toastify.jsx';
 
 const ChannelsMenu = () => {
+  const { t } = useTranslation();
+  const { notify } = useContext(ToastContext);
+
   const [
     addChannel,
     {
@@ -36,13 +41,16 @@ const ChannelsMenu = () => {
     if (isChannelAdditionUninitialized) return;
 
     if (isChannelAdditionError) {
-      setStatus('error'); return;
+      setStatus('error');
+      notify('error', t('toastify.error-channel-save'));
+      return;
     }
 
     if (isChannelAdded) {
       setStatus('pending');
       setShown(false);
       dispatch(chooseChannel(addedChannelData));
+      notify('success', t('toastify.success-channel-save'));
     }
     // eslint-disable-next-line
   }, [
