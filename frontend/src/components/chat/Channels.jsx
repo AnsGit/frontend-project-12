@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
-import { SocketContext } from '../../services/socket';
+import { SocketContext, handleSocketErrors } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 import ChannelsMenu from './ChannelsMenu';
 import ChannelMenu from './ChannelMenu';
@@ -81,6 +81,8 @@ const Channels = () => {
       // subscribe rename channel
       socket.on('renameChannel', () => refetchChannels());
     });
+
+    handleSocketErrors(socket, () => notify('error', t('toastify.error-data-synchronization')));
     // eslint-disable-next-line
   }, []);
 

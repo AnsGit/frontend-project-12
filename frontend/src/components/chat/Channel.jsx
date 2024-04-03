@@ -8,7 +8,7 @@ import {
   useAddMessageMutation,
 } from '../../services/api/messages';
 import MessageForm from '../forms/MessageForm.jsx';
-import { SocketContext } from '../../services/socket';
+import { SocketContext, handleSocketErrors } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 
 const Channel = () => {
@@ -83,6 +83,8 @@ const Channel = () => {
       // subscribe new message
       socket.on('newMessage', refetch);
     });
+
+    handleSocketErrors(socket, () => notify('error', t('toastify.error-data-synchronization')));
     // eslint-disable-next-line
   }, []);
 
