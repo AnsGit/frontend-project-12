@@ -52,6 +52,7 @@ export default {
       'error-channel-deletion': 'Ошибка удаления канала...',
       'success-channel-save': 'Канал усшешно сохранен!',
       'success-channel-deletion': 'Канал усшешно удален!',
+      'error-data-synchronization': 'Ошибка синхронизации данных...',
     },
     username: 'Имя',
     password: 'Пароль',

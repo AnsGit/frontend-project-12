@@ -129,7 +129,7 @@ const Channels = () => {
                   className={btnClassName}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
-                  {filter.clean(name)}
+                  {`#${filter.clean(name)}`}
                 </Button>
 
                 {removable && <ChannelMenu id={id} name={name} />}
