@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useRef, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
+import filter from 'leo-profanity';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
 import { SocketContext, handleSocketErrors } from '../../services/socket';
@@ -20,8 +21,10 @@ import ChannelMenu from './ChannelMenu';
 // };
 
 const Channels = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { notify } = useContext(ToastContext);
+
+  filter.loadDictionary(i18n.language);
 
   const {
     data: channels,
@@ -126,7 +129,7 @@ const Channels = () => {
                   className={btnClassName}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
-                  {name}
+                  {filter.clean(name)}
                 </Button>
 
                 {removable && <ChannelMenu id={id} name={name} />}

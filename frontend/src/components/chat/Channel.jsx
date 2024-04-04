@@ -3,6 +3,7 @@ import {
   useRef, useEffect, useContext, useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import {
   useGetMessagesQuery,
   useAddMessageMutation,
@@ -12,8 +13,10 @@ import { SocketContext, handleSocketErrors } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 
 const Channel = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { notify } = useContext(ToastContext);
+
+  filter.loadDictionary(i18n.language);
 
   const {
     data: messages,
@@ -25,10 +28,7 @@ const Channel = () => {
 
   const [
     addMessage,
-    {
-      isSuccess: isMessageAdded,
-      isError: isMessageAdditionError,
-    },
+    { isSuccess: isMessageAdded, isError: isMessageAdditionError },
   ] = useAddMessageMutation();
 
   const [status, setStatus] = useState('pending');
@@ -67,10 +67,7 @@ const Channel = () => {
     if (messagesLoadingStatus !== 'fulfilled') return;
 
     messagesRef?.current?.scrollTo(0, messagesRef.current.scrollHeight);
-  }, [
-    messagesLoadingStatus,
-    curChannelID,
-  ]);
+  }, [messagesLoadingStatus, curChannelID]);
 
   useEffect(() => {
     if (!isMessagesLoadingError) return;
@@ -91,29 +88,24 @@ const Channel = () => {
   if (!isMessagesDataLoaded) return null;
   if (curChannelID === null) return null;
 
-  const channelMessages = messages.filter(({ channelId }) => channelId === curChannelID);
+  const channelMessages = messages.filter(
+    ({ channelId }) => channelId === curChannelID,
+  );
 
   return (
     <div className="col position-relative h-100">
       <div ref={messagesRef} className="row overflow-auto h-75 w-100 m-0">
         <div className="list-group p-4">
           {channelMessages.map(({ id, body, username }) => (
-            <div
-              key={id}
-              className="row mb-3"
-            >
-              <span className="fw-bold text-start">
-                {username}
-              </span>
-              <span className="text-start">
-                {body}
-              </span>
+            <div key={id} className="row mb-3">
+              <span className="fw-bold text-start">{username}</span>
+              <span className="text-start">{filter.clean(body)}</span>
             </div>
           ))}
         </div>
       </div>
       <div className="row w-100 h-25 bg-secondary-subtle m-0 align-items-center">
-        <MessageForm onSubmit={(onAddMessage)} status={status} />
+        <MessageForm onSubmit={onAddMessage} status={status} />
       </div>
     </div>
   );
