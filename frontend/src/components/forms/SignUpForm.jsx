@@ -90,7 +90,7 @@ const SignUpForm = (props) => {
               className="btn btn-primary mt-1"
               disabled={isDisabled}
             >
-              {t('submit')}
+              {t('sign-up')}
             </Button>
 
             <span className="d-flex justify-content-center mt-4 w-100">

@@ -50,7 +50,7 @@ const LoginForm = (props) => {
 
             <FormField
               name="username"
-              label={t('username')}
+              label={t('usernickname')}
               type="text"
               errors={errors}
             />
@@ -67,7 +67,7 @@ const LoginForm = (props) => {
               className="btn btn-primary mt-1"
               disabled={isDisabled}
             >
-              {t('submit')}
+              {t('enter')}
             </Button>
 
             <span className="d-flex justify-content-center mt-4 w-100">

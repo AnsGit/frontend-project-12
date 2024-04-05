@@ -89,14 +89,14 @@ const ChannelMenu = (props = {}) => {
 
     if (isChannelUpdateError) {
       setStatus('error');
-      notify('error', t('toastify.error-channel-save'));
+      notify('error', t('toastify.error-channel-update'));
       return;
     }
 
     if (isChannelUpdated) {
       setStatus('pending');
       setShown(false);
-      notify('success', t('toastify.success-channel-save'));
+      notify('success', t('toastify.success-channel-update'));
     }
     // eslint-disable-next-line
   }, [
@@ -148,7 +148,9 @@ const ChannelMenu = (props = {}) => {
       <Dropdown
         as={ButtonGroup}
       >
-        <Dropdown.Toggle split className="rounded-start-0 rounded-end-2" />
+        <Dropdown.Toggle split className="rounded-start-0 rounded-end-2">
+          <span className="visually-hidden">{t('channel-management')}</span>
+        </Dropdown.Toggle>
 
         <Dropdown.Menu className="super-colors">
           <Dropdown.Item

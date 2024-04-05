@@ -123,6 +123,7 @@ const Channels = () => {
             return (
               <div
                 key={id}
+                role="group"
                 className={className}
               >
                 <Button

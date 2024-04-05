@@ -42,7 +42,7 @@ const ChannelsMenu = () => {
 
     if (isChannelAdditionError) {
       setStatus('error');
-      notify('error', t('toastify.error-channel-save'));
+      notify('error', t('toastify.error-channel-creation'));
       return;
     }
 
@@ -50,7 +50,7 @@ const ChannelsMenu = () => {
       setStatus('pending');
       setShown(false);
       dispatch(chooseChannel(addedChannelData));
-      notify('success', t('toastify.success-channel-save'));
+      notify('success', t('toastify.success-channel-creation'));
     }
     // eslint-disable-next-line
   }, [

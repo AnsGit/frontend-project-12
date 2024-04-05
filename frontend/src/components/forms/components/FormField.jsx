@@ -5,6 +5,8 @@ const FormField = ({
   name, label, type, errors, component = 'input',
 }) => (
   <div className="form-group m-auto mb-2">
+    <label className="visually-hidden" htmlFor={name}>{label}</label>
+
     <Field
       type={type}
       name={name}
