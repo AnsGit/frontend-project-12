@@ -15,11 +15,6 @@ const validationSchema = Yup.object({
   password: Yup.string()
     .max(20, 'signup-password-long')
     .min(6, 'signup-password-short')
-    .test(
-      'check-password',
-      'signup-password-confirmation',
-      (value, data) => isPasswordConfirmed(data.parent),
-    )
     .required('field-required'),
   passwordConfirmation: Yup.string()
     .max(20, 'signup-password-long')
