@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import filter from 'leo-profanity';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
-import { SocketContext, handleSocketErrors } from '../../services/socket';
+import { socket } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 import ChannelsMenu from './ChannelsMenu';
 import ChannelMenu from './ChannelMenu';
@@ -41,8 +41,6 @@ const Channels = () => {
   const chooseDefaultChannel = () => dispatch(chooseChannel(channels[0]));
   // const onAddChannel = () => scrollToChannel(channelsRef, curChannelID);
 
-  const socket = useContext(SocketContext);
-
   useEffect(() => {
     if (isChannelsLoadingError) {
       notify('error', t('toastify.error-loading-channels'));
@@ -74,18 +72,14 @@ const Channels = () => {
   }, [channels]);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      // subscribe new channel
-      socket.on('newChannel', () => refetchChannels());
-      // subscribe remove channel
-      socket.on('removeChannel', () => refetchChannels());
-      // subscribe rename channel
-      socket.on('renameChannel', () => refetchChannels());
-    });
-
-    handleSocketErrors(socket, () => notify('error', t('toastify.error-data-synchronization')));
+    // subscribe new channel
+    socket.on('newChannel', () => refetchChannels());
+    // subscribe remove channel
+    socket.on('removeChannel', () => refetchChannels());
+    // subscribe rename channel
+    socket.on('renameChannel', () => refetchChannels());
     // eslint-disable-next-line
-  }, []);
+  });
 
   if (!isChannelsDataLoaded) return null;
 

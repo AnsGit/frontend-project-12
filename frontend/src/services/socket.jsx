@@ -1,22 +1,14 @@
-import { createContext } from 'react';
 import io from 'socket.io-client';
+import { toast } from 'react-toastify';
 
-const SocketContext = createContext();
+const socket = io();
 
-const handleSocketErrors = (socket, cb = () => {}) => {
-  socket.on('connect_error', (error) => cb('connect_error', error));
-  socket.on('connect_failed', (error) => cb('connect_failed', error));
-  socket.on('disconnect', (error) => cb('disconnect', error));
+const connect = (errText, cb) => {
+  socket.on('connect_error', () => toast(errText, { type: 'error' }));
+  socket.on('connect_failed', () => toast(errText, { type: 'error' }));
+  socket.on('disconnect', () => toast(errText, { type: 'error' }));
+
+  socket.on('connect', cb);
 };
 
-const SocketProvider = (props = {}) => {
-  const socket = io();
-
-  return (
-    <SocketContext.Provider value={socket}>
-      {props.children}
-    </SocketContext.Provider>
-  );
-};
-
-export { SocketContext, SocketProvider, handleSocketErrors };
+export { socket, connect };
