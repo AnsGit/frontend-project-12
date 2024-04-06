@@ -21,10 +21,8 @@ import ChannelMenu from './ChannelMenu';
 // };
 
 const Channels = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { notify } = useContext(ToastContext);
-
-  filter.loadDictionary(i18n.language);
 
   const {
     data: channels,
