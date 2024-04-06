@@ -15,6 +15,7 @@ const FormField = ({
       className="form-control mt-1"
       placeholder={label}
       label={label}
+      area-label={label}
       style={{ resize: 'none' }}
     />
     { errors[name] ? <FormFeedback type="error" code={errors[name]} /> : null }

@@ -56,7 +56,7 @@ export default {
     password: 'Пароль',
     'password-confirmation': 'Подтвердите пароль',
     submit: 'Подтвердить',
-    message: 'Сообщение',
+    message: 'Новое сообщение',
     send: 'Отправить',
     cancel: 'Отменить',
     'channel-management': 'Управление каналом',
