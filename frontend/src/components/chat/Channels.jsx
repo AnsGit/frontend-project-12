@@ -118,8 +118,6 @@ const Channels = () => {
               { active: isActive, 'rounded-end-0': removable },
             );
 
-            const btnName = filter.clean(name);
-
             return (
               <div
                 key={id}
@@ -128,11 +126,10 @@ const Channels = () => {
               >
                 <Button
                   className={btnClassName}
-                  name={btnName}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
-                  <span className="me-1">#</span>
-                  {btnName}
+                  {/* <span className="me-1">#</span> */}
+                  {filter.clean(name)}
                 </Button>
 
                 {removable && <ChannelMenu id={id} name={name} />}
