@@ -85,7 +85,7 @@ const Channels = () => {
     // subscribe rename channel
     socket.on('renameChannel', () => refetchChannels());
     // eslint-disable-next-line
-  });
+  }, []);
 
   if (!isChannelsDataLoaded) return null;
 
