@@ -9,14 +9,12 @@ import {
   useAddMessageMutation,
 } from '../../services/api/messages';
 import MessageForm from '../forms/MessageForm.jsx';
-import { SocketContext, handleSocketErrors } from '../../services/socket';
+import { socket } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 
 const Channel = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { notify } = useContext(ToastContext);
-
-  filter.loadDictionary(i18n.language);
 
   const {
     data: messages,
@@ -37,8 +35,6 @@ const Channel = () => {
   const user = useSelector((state) => state.user);
 
   const messagesRef = useRef();
-
-  const socket = useContext(SocketContext);
 
   const onAddMessage = (data, { resetForm }) => {
     setStatus('sending');
@@ -76,12 +72,7 @@ const Channel = () => {
   }, [isMessagesLoadingError]);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      // subscribe new message
-      socket.on('newMessage', refetch);
-    });
-
-    handleSocketErrors(socket, () => notify('error', t('toastify.error-data-synchronization')));
+    socket.on('newMessage', refetch);
     // eslint-disable-next-line
   }, []);
 

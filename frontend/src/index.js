@@ -3,7 +3,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
-import { SocketProvider } from './services/socket.jsx';
+import { connect } from './services/socket.jsx';
 import resources from './locales';
 import './index.css';
 import App from './App';
@@ -22,18 +22,21 @@ const init = async () => {
 
   const root = ReactDOM.createRoot(document.getElementById('root'));
 
-  root.render(
-    <RollbarProvider>
-      <SocketProvider>
-        <I18nextProvider i18n={i18n}>
-          <ToastProvider>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </ToastProvider>
-        </I18nextProvider>
-      </SocketProvider>
-    </RollbarProvider>,
+  connect(
+    i18n.t('toastify.error-data-synchronization'),
+    () => {
+      root.render(
+        <RollbarProvider>
+          <I18nextProvider i18n={i18n}>
+            <ToastProvider>
+              <Provider store={store}>
+                <App />
+              </Provider>
+            </ToastProvider>
+          </I18nextProvider>
+        </RollbarProvider>,
+      );
+    },
   );
 
   // If you want to start measuring performance in your app, pass a function

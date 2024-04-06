@@ -1,7 +1,7 @@
 export default {
   translation: {
     header: {
-      title: 'Hexlet чат',
+      title: 'Hexlet Chat',
     },
     chat: {
       title: 'Чат',
@@ -24,15 +24,15 @@ export default {
       'error-login-username-long': 'Имя должно содержать максимум 20 символов',
       'error-login-password-short': 'От 3 до 20 символов',
       'error-login-password-long': 'От 3 до 20 символов',
-      'error-signup': 'Пользователь с таким именем уже существует',
+      'error-signup': 'Такой пользователь уже существует',
       'error-signup-username-short': 'От 3 до 20 символов',
       'error-signup-username-long': 'От 3 до 20 символов',
       'error-signup-password-short': 'Не менее 6 символов',
       'error-signup-password-long': 'Не менее 6 символов',
       'error-signup-password-confirmation': 'Пароли должны совпадать',
       'success-channel-save': 'Канал сохранен',
-      'error-channel-name-short': 'Имя должно содержать минимум 3 символов',
-      'error-channel-name-long': 'Имя должно содержать максимум 20 символов',
+      'error-channel-name-short': 'От 3 до 20 символов',
+      'error-channel-name-long': 'От 3 до 20 символов',
       'error-channel-exists': 'Канал с таким именем уже существует',
       'error-channel-save': 'Ошибка сохранения канала',
       'error-channel-delete': 'Ошибка удаления канала',
@@ -56,7 +56,7 @@ export default {
     password: 'Пароль',
     'password-confirmation': 'Подтвердите пароль',
     submit: 'Подтвердить',
-    message: 'Сообщение',
+    message: 'Новое сообщение',
     send: 'Отправить',
     cancel: 'Отменить',
     'channel-management': 'Управление каналом',

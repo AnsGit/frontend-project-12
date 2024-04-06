@@ -95,8 +95,8 @@ const ChannelMenu = (props = {}) => {
 
     if (isChannelUpdated) {
       setStatus('pending');
-      setShown(false);
       notify('success', t('toastify.success-channel-update'));
+      setShown(false);
     }
     // eslint-disable-next-line
   }, [
@@ -106,7 +106,7 @@ const ChannelMenu = (props = {}) => {
   ]);
 
   useEffect(() => {
-    if (isChannelDeletionUninitialized) return;
+    // if (isChannelDeletionUninitialized) return;
 
     if (isChannelDeletionError) {
       setStatus('error');
@@ -116,8 +116,8 @@ const ChannelMenu = (props = {}) => {
 
     if (isChannelDeleted) {
       setStatus('pending');
-      setShown(false);
       notify('success', t('toastify.success-channel-deletion'));
+      setShown(false);
     }
     // eslint-disable-next-line
   }, [
@@ -148,7 +148,7 @@ const ChannelMenu = (props = {}) => {
       <Dropdown
         as={ButtonGroup}
       >
-        <Dropdown.Toggle split className="rounded-start-0 rounded-end-2">
+        <Dropdown.Toggle split className="rounded-0 btn-secondary">
           <span className="visually-hidden">{t('channel-management')}</span>
         </Dropdown.Toggle>
 

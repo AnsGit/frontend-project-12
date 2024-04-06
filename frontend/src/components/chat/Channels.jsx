@@ -1,12 +1,14 @@
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useRef, useEffect, useContext } from 'react';
+import {
+  useRef, useEffect, useContext, useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import filter from 'leo-profanity';
 import { useGetChannelsQuery } from '../../services/api/channels';
 import { chooseChannel } from '../../store/channel';
-import { SocketContext, handleSocketErrors } from '../../services/socket';
+import { socket } from '../../services/socket';
 import { ToastContext } from '../toastify.jsx';
 import ChannelsMenu from './ChannelsMenu';
 import ChannelMenu from './ChannelMenu';
@@ -21,18 +23,20 @@ import ChannelMenu from './ChannelMenu';
 // };
 
 const Channels = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { notify } = useContext(ToastContext);
-
-  filter.loadDictionary(i18n.language);
 
   const {
     data: channels,
     isSuccess: isChannelsDataLoaded,
     isError: isChannelsLoadingError,
-    refetch: refetchChannels,
+    refetch,
     // status: channelsLoadingStatus,
   } = useGetChannelsQuery();
+
+  const refetchChannels = useCallback(() => {
+    try { refetch(); } catch (e) { console.warn(e); }
+  }, [refetch]);
 
   const curChannelID = useSelector((state) => state.channel.data.id);
 
@@ -42,8 +46,6 @@ const Channels = () => {
 
   const chooseDefaultChannel = () => dispatch(chooseChannel(channels[0]));
   // const onAddChannel = () => scrollToChannel(channelsRef, curChannelID);
-
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     if (isChannelsLoadingError) {
@@ -76,16 +78,12 @@ const Channels = () => {
   }, [channels]);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      // subscribe new channel
-      socket.on('newChannel', () => refetchChannels());
-      // subscribe remove channel
-      socket.on('removeChannel', () => refetchChannels());
-      // subscribe rename channel
-      socket.on('renameChannel', () => refetchChannels());
-    });
-
-    handleSocketErrors(socket, () => notify('error', t('toastify.error-data-synchronization')));
+    // subscribe new channel
+    socket.on('newChannel', () => refetchChannels());
+    // subscribe remove channel
+    socket.on('removeChannel', () => refetchChannels());
+    // subscribe rename channel
+    socket.on('renameChannel', () => refetchChannels());
     // eslint-disable-next-line
   }, []);
 
@@ -93,12 +91,13 @@ const Channels = () => {
 
   return (
     <div className="col d-flex flex-column h-100">
-      <div className="row mb-3">
+      <div className="row">
         <div className="col fs-5 text-start">
           {t('channels')}
         </div>
         <ChannelsMenu />
       </div>
+      <hr />
       <div ref={channelsRef} className="row overflow-auto position-relative h-100">
         <div className="list-group p-0 text-start">
           {channels.map((channel) => {
@@ -113,11 +112,10 @@ const Channels = () => {
             );
 
             const btnClassName = cn(
-              'list-group-item',
-              'btn-primary',
               'w-100',
+              'rounded-0',
               'text-start',
-              { active: isActive, 'rounded-end-0': removable },
+              'text-truncate',
             );
 
             return (
@@ -128,9 +126,11 @@ const Channels = () => {
               >
                 <Button
                   className={btnClassName}
+                  variant={isActive ? 'secondary' : ''}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
-                  {`#${filter.clean(name)}`}
+                  <span className="me-1">#</span>
+                  {filter.clean(name)}
                 </Button>
 
                 {removable && <ChannelMenu id={id} name={name} />}

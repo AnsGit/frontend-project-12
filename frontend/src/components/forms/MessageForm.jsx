@@ -38,7 +38,6 @@ const MessageForm = (props) => {
               <div className="col p-3">
                 <FormField
                   name="body"
-                  component="textarea"
                   label={t('message')}
                   type="text"
                   errors={errors}
