@@ -1,6 +1,8 @@
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useRef, useEffect, useContext } from 'react';
+import {
+  useRef, useEffect, useContext, useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import filter from 'leo-profanity';
@@ -28,9 +30,13 @@ const Channels = () => {
     data: channels,
     isSuccess: isChannelsDataLoaded,
     isError: isChannelsLoadingError,
-    refetch: refetchChannels,
+    refetch,
     // status: channelsLoadingStatus,
   } = useGetChannelsQuery();
+
+  const refetchChannels = useCallback(() => {
+    try { refetch(); } catch (e) { console.warn(e); }
+  }, [refetch]);
 
   const curChannelID = useSelector((state) => state.channel.data.id);
 
