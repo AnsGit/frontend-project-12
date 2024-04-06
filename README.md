@@ -36,10 +36,6 @@ make build
 make start
 ```
 
-### Результат
-https://frontend-project-12-wcl5.onrender.com/
-
-
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/AnsGit/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/AnsGit/frontend-project-12/actions)
 
