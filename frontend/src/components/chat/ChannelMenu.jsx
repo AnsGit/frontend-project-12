@@ -148,7 +148,7 @@ const ChannelMenu = (props = {}) => {
       <Dropdown
         as={ButtonGroup}
       >
-        <Dropdown.Toggle split className="rounded-start-0 rounded-end-2">
+        <Dropdown.Toggle split className="rounded-0 btn-secondary">
           <span className="visually-hidden">{t('channel-management')}</span>
         </Dropdown.Toggle>
 

@@ -85,12 +85,13 @@ const Channels = () => {
 
   return (
     <div className="col d-flex flex-column h-100">
-      <div className="row mb-3">
+      <div className="row">
         <div className="col fs-5 text-start">
           {t('channels')}
         </div>
         <ChannelsMenu />
       </div>
+      <hr />
       <div ref={channelsRef} className="row overflow-auto position-relative h-100">
         <div className="list-group p-0 text-start">
           {channels.map((channel) => {
@@ -105,11 +106,10 @@ const Channels = () => {
             );
 
             const btnClassName = cn(
-              'list-group-item',
-              'btn-primary',
               'w-100',
+              'rounded-0',
               'text-start',
-              { active: isActive, 'rounded-end-0': removable },
+              'text-truncate',
             );
 
             return (
@@ -120,6 +120,7 @@ const Channels = () => {
               >
                 <Button
                   className={btnClassName}
+                  variant={isActive ? 'secondary' : ''}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
                   <span className="me-1">#</span>
