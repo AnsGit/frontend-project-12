@@ -106,7 +106,7 @@ const ChannelMenu = (props = {}) => {
   ]);
 
   useEffect(() => {
-    if (isChannelDeletionUninitialized) return;
+    // if (isChannelDeletionUninitialized) return;
 
     if (isChannelDeletionError) {
       setStatus('error');
