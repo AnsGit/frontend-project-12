@@ -24,7 +24,7 @@ export default {
       'error-login-username-long': 'Имя должно содержать максимум 20 символов',
       'error-login-password-short': 'От 3 до 20 символов',
       'error-login-password-long': 'От 3 до 20 символов',
-      'error-signup': 'Пользователь с таким именем уже существует',
+      'error-signup': 'Такой пользователь уже существует',
       'error-signup-username-short': 'От 3 до 20 символов',
       'error-signup-username-long': 'От 3 до 20 символов',
       'error-signup-password-short': 'Не менее 6 символов',
