@@ -95,8 +95,8 @@ const ChannelMenu = (props = {}) => {
 
     if (isChannelUpdated) {
       setStatus('pending');
-      setShown(false);
       notify('success', t('toastify.success-channel-update'));
+      setShown(false);
     }
     // eslint-disable-next-line
   }, [
@@ -116,8 +116,8 @@ const ChannelMenu = (props = {}) => {
 
     if (isChannelDeleted) {
       setStatus('pending');
-      setShown(false);
       notify('success', t('toastify.success-channel-deletion'));
+      setShown(false);
     }
     // eslint-disable-next-line
   }, [
