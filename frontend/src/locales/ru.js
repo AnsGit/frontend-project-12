@@ -1,7 +1,7 @@
 export default {
   translation: {
     header: {
-      title: 'Hexlet чат',
+      title: 'Hexlet Chat',
     },
     chat: {
       title: 'Чат',
