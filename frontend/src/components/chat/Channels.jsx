@@ -128,7 +128,7 @@ const Channels = () => {
                   className={btnClassName}
                   onClick={() => dispatch(chooseChannel(channel))}
                 >
-                  {/* <span className="me-1">#</span> */}
+                  <span className="me-1">#</span>
                   {filter.clean(name)}
                 </Button>
 

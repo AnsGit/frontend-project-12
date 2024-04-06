@@ -17,6 +17,7 @@ const messagesApi = createApi({
   endpoints: (builder) => ({
     getMessages: builder.query({
       query: () => '',
+      keepUnusedDataFor: 0,
     }),
     addMessage: builder.mutation({
       query: (channel) => ({
